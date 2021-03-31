@@ -17,6 +17,8 @@ bool htab_erase(htab_t *t, htab_key_t key) {
 			htab_item_t *erasedItem = *item;
 			(*item) = (*item)->next;
 			htab_item_free(erasedItem);
+			// one item less in table
+			t->size--;
 			return true;
 		}
 		item = &(*item)->next;

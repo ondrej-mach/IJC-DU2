@@ -25,5 +25,8 @@ htab_t *htab_move(size_t n, htab_t *oldTab) {
 		oldTab->items[i] = NULL;
 	}
 
+	newTab->size = oldTab->size;
+	oldTab->size = 0;
+
 	return newTab;
 }
