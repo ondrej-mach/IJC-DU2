@@ -1,0 +1,10 @@
+*.txt
+*.log
+*.o
+*.a
+*.so
+wordcount
+wordcount-
+wordcount-dynamic
+tail
+*.zip
