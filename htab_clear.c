@@ -13,9 +13,7 @@ void htab_clear(htab_t *t) {
 		// free linked list of items - if there is any
 		while (item != NULL) {
 			htab_item_t *next = item->next;
-
-			free((char *)item->pair.key);
-			free(item);
+			htab_item_free(item);
 			item = next;
 		}
 		t->items[i] = NULL;

@@ -22,4 +22,7 @@ struct htab {
     htab_item_t *items[];
 };
 
+htab_item_t *htab_item_init();
+void htab_item_free(htab_item_t *item);
+
 #endif // __HTAB_PRIVATE_H__
