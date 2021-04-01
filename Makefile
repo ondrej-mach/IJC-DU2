@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c99 -pedantic -Wall -Wextra -fPIC -g
+CFLAGS=-std=c99 -pedantic -Wall -Wextra -fPIC -g #-DHASHTEST #-DMOVETEST
 CXXFLAGS=-std=c++17 -pedantic -Wall
 LIBHTAB_OBJECTS=htab_clear.o  htab_find.o  htab_free.o  htab_hash_function.o  htab_init.o  htab_size.o htab_lookup_add.o htab_for_each.o htab_item_free.o htab_item_init.o htab_move.o
 EXECUTABLES=tail wordcount wordcount-dynamic

@@ -19,6 +19,7 @@ htab_t *htab_move(size_t n, htab_t *oldTab) {
 
 			htab_pair_t *movedPair = htab_lookup_add(newTab, item->pair.key);
 			movedPair->value = item->pair.value;
+			htab_item_free(item);
 
 			item = next;
 		}
