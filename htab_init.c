@@ -9,6 +9,10 @@
 
 htab_t *htab_init(size_t n) {
 	htab_t *t = malloc(offsetof(htab_t, items) + n * sizeof(htab_item_t *));
+	if (t == NULL) {
+		return NULL;
+	}
+
 	t->size = 0;
 	t->arr_size = n;
 

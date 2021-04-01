@@ -22,7 +22,10 @@ struct htab {
     htab_item_t *items[];
 };
 
+// allocates a new item with the given key and a value of 0
+// if any allocation fails, return is NULL
 htab_item_t *htab_item_init();
+// frees the item structure
 void htab_item_free(htab_item_t *item);
 
 #endif // __HTAB_PRIVATE_H__

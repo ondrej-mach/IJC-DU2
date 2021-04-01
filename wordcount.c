@@ -16,28 +16,38 @@
 // only for test of htab_move()
 #define NEW_HASTABLE_SIZE 30
 
+
 // user-defined hash function
 #ifdef HASHTEST
-// hashing algorithm djb2 by Dan Bernstein
-// http://www.cse.yorku.ca/~oz/hash.html
-size_t htab_hash_function(htab_key_t str) {
-	size_t hash = 5381;
-    int c;
-    while ((c = *str++) != '\0') {
-        hash = ((hash << 5) + hash) + c; // hash * 33 + c
+	// hashing algorithm djb2 by Dan Bernstein
+	// http://www.cse.yorku.ca/~oz/hash.html
+	size_t htab_hash_function(htab_key_t str) {
+		size_t hash = 5381;
+	    int c;
+	    while ((c = *str++) != '\0') {
+	        hash = ((hash << 5) + hash) + c; // hash * 33 + c
+		}
+	    return hash;
 	}
-    return hash;
-}
 #endif
+
 
 // function to print (key, value) pair in the hash table
 void printPair(htab_pair_t *pair) {
 	printf("%s\t%d\n", pair->key, pair->value);
 }
 
-int main() {
-	htab_t *table = htab_init(HASTABLE_SIZE);
 
+int main() {
+	const char *memErrMsg = "Memory could not be allocated, exiting\n";
+	htab_t *table = htab_init(HASTABLE_SIZE);
+	// if new table cannot be allocated
+	if (table == NULL) {
+		fprintf(stderr, "%s", memErrMsg);
+		exit(1);
+	}
+
+	// buffer for words
 	char word[WORD_LENGTH];
 	// read words from stdin, while you can
 	while (read_word(word, WORD_LENGTH, stdin) != EOF) {
@@ -45,6 +55,12 @@ int main() {
 		// this function will find existing or create a new one
 		// if new one is created, the value is initialized to zero
 		htab_pair_t *pair = htab_lookup_add(table, word);
+		// pair did not exist and could not be allocated
+		if (pair == NULL) {
+			fprintf(stderr, "%s", memErrMsg);
+			htab_free(table);
+			exit(1);
+		}
 		// value is incremented for each occurence of the word
 		pair->value++;
 	}
@@ -56,6 +72,11 @@ int main() {
 		// test the move function
 		tableToPrint = htab_move(NEW_HASTABLE_SIZE, table);
 		htab_free(table);
+		// if new table cannot be allocated
+		if (tableToPrint == NULL) {
+			fprintf(stderr, "%s", memErrMsg);
+			exit(1);
+		}
 	#endif
 
 	// print every stored with the number of its occurences

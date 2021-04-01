@@ -7,10 +7,22 @@
 #include <string.h>
 #include "htab_private.h"
 
+// allocates a new item with the given key and a value of 0
+// if any allocation fails, return is NULL
 htab_item_t *htab_item_init(htab_key_t key) {
 	htab_item_t *item = malloc(sizeof(htab_item_t));
+	// check for malloc failure
+	if (item == NULL) {
+		return NULL;
+	}
+
 	// allocate its key and set it
 	item->pair.key = malloc(strlen(key) + 1);
+	if (item->pair.key == NULL) {
+		free(item);
+		return NULL;
+	}
+
 	strcpy((char *)item->pair.key, key);
 	// set the value to 0 by default
 	item->pair.value = 0;

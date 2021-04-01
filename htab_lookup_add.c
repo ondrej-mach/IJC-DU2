@@ -21,6 +21,10 @@ htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key) {
 
 	// allocate new item at the end of the list with the given key
 	*item = htab_item_init(key);
+	// if item could not be added, return NULL
+	if (*item == NULL) {
+		return NULL;
+	}
 	// one more item in table
 	t->size++;
 
