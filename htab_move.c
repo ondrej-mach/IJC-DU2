@@ -9,25 +9,25 @@
 
 htab_t *htab_move(size_t n, htab_t *oldTab) {
 	htab_t *newTab = htab_init(n);
+	if (newTab == NULL) {
+		return NULL;
+	}
 
 	for (size_t i=0; i < oldTab->arr_size; i++) {
 		htab_item_t *item = oldTab->items[i];
 
-		// move all items form linked list
+		// move all items from the linked list
 		while (item != NULL) {
-			htab_item_t *next = item->next;
-
 			htab_pair_t *movedPair = htab_lookup_add(newTab, item->pair.key);
+			if (movedPair == NULL) {
+				htab_free(newTab);
+				return NULL;
+			}
 			movedPair->value = item->pair.value;
-			htab_item_free(item);
 
-			item = next;
+			item = item->next;
 		}
-		oldTab->items[i] = NULL;
 	}
-
-	newTab->size = oldTab->size;
-	oldTab->size = 0;
-
+	htab_clear(oldTab);
 	return newTab;
 }
