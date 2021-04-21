@@ -7,19 +7,20 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-// ensures, that the long word warning is printed only once
-static bool longWarned = false;
-
-// true if whitespace, false if EOF
-void readUntilSpace(FILE *f) {
+// returns number of discarded characters (whitespace not included)
+int readUntilSpace(FILE *f) {
+	int i = 0;
 	int c;
 	while ((c=fgetc(f)) != EOF) {
 		if (isspace(c)) {
-			return;
+			return i;
 		}
+		i++;
 	}
+	return i;
 }
 
+// returns the length of the read word (not including whitespaces)
 int read_word(char *str, int maxLength, FILE *f) {
 	int index = 0;
 	int c;
@@ -53,12 +54,8 @@ int read_word(char *str, int maxLength, FILE *f) {
 		return index;
 	}
 	// otherwise the word was longer
-	if (!longWarned) {
-		fprintf(stderr, "Word is too long, it has been truncated to %d characters.\n", maxLength-1);
-		longWarned = true;
-	}
 	// discards the rest of the word
-	readUntilSpace(f);
+	int discardedChars = readUntilSpace(f);
 	// still returns maxLength - 1
-	return index;
+	return index + discardedChars;
 }

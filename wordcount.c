@@ -46,11 +46,18 @@ int main() {
 		fprintf(stderr, "%s", memErrMsg);
 		exit(1);
 	}
-
+	// only one warning is issued, next are ignored
+	bool longWarned = false;
 	// buffer for words
 	char word[WORD_LENGTH];
+	// length of the read word to detect words that are too long
+	int len;
 	// read words from stdin, while you can
-	while (read_word(word, WORD_LENGTH, stdin) != EOF) {
+	while ((len = read_word(word, WORD_LENGTH, stdin)) != EOF) {
+		if ((len >= WORD_LENGTH - 1) && !longWarned) {
+			fprintf(stderr, "Word is too long, it has been truncated to %d characters.\n", WORD_LENGTH-1);
+			longWarned = true;
+		}
 		// get the pointer to the pair
 		// this function will find existing or create a new one
 		// if new one is created, the value is initialized to zero
