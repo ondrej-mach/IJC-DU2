@@ -176,6 +176,10 @@ Options parseArgs(int argc, char **argv) {
 
 		if (inFile == NULL) {
 			inFile = fopen(argv[optIndex], "r");
+			if (inFile == NULL) {
+				fprintf(stderr, "File `%s` could not be opened\n", argv[optIndex]);
+				exit(1);
+			}
 			atexit(closeInFile);
 			optIndex++;
 			continue;
